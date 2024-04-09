@@ -114,8 +114,6 @@ const productController = {
         }
         // image delete
         const imagePath = document._doc.image;
-        // http://localhost:5000/uploads/1616444052539-425006577.png
-        // approot/http://localhost:5000/uploads/1616444052539-425006577.png
         fs.unlink(`${appRoot}/${imagePath}`, (err) => {
             if (err) {
                 return next(CustomErrorHandler.serverError());
@@ -145,7 +143,7 @@ const productController = {
             return next(CustomErrorHandler.serverError());
         }        
         if (!document) {
-            return next(new Error('product is either deleted or not exist!'));
+            return next(new Error('Product is either deleted or not exist!'));
         }
         return res.json(document);
     },

@@ -56,7 +56,7 @@ const productController = {
                 });
             } catch (err) {
                 return next(err);
-            }
+            }            
             res.status(201).json(document);
         });
     },

@@ -62,13 +62,11 @@ const productController = {
     },
     update(req, res, next) {
         handleMultipartData(req, res, async (err) => {
-            if (err) {
-                return next(CustomErrorHandler.serverError(err.message));
-            }
+            if (err) next(CustomErrorHandler.serverError(err.message));
+
             let filePath;
-            if (req.file) {
+            if (req.file) 
                 filePath = req.file.path;
-            }
 
             // validation
             const { error } = productSchema.validate(req.body);
@@ -76,11 +74,7 @@ const productController = {
                 // Delete the uploaded file
                 if (req.file) {
                     fs.unlink(`${appRoot}/${filePath}`, (err) => {
-                        if (err) {
-                            return next(
-                                CustomErrorHandler.serverError(err.message)
-                            );
-                        }
+                        if (err) next(CustomErrorHandler.serverError(err.message));
                     });
                 }
 
@@ -139,7 +133,7 @@ const productController = {
             document = await Product.findOne({ _id: req.params.id }).select(
                 '-updatedAt -__v'
             );
-        } catch (err) {
+        } catch (err) {            
             return next(CustomErrorHandler.serverError());
         }        
         if (!document) {
@@ -150,12 +144,13 @@ const productController = {
     async getProducts(req, res, next) {
         let documents;
         try {
+            documents = await Product.originalname();
             documents = await Product.find({
-                _id: { $in: req.body.ids },
-            }).select('-updatedAt -__v');
+                _id: { $in: req.body.ids }
+            }).select('-updatedAt -__v');           
         } catch (err) {
             return next(CustomErrorHandler.serverError());
-        }
+        } 
         return res.json(documents);
     },
 };
